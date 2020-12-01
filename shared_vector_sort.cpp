@@ -37,7 +37,7 @@ int main(void) {
 	va.push_back(a4);
 	va.push_back(a5);
 
-	//mJikan‚Ì¸‡‚Åƒ\[ƒg‚·‚éê‡
+	//mJikanã®æ˜‡é †ã§ã‚½ãƒ¼ãƒˆã™ã‚‹å ´åˆ
 
 	std::sort(va.begin(), va.end(), [](auto const& c1, auto const& c2) {
 		return c1->mJikan < c2->mJikan;
@@ -49,7 +49,7 @@ int main(void) {
 		c->dump();
 	});
 
-	//mDistance‚Ì¸‡‚Åƒ\[ƒg‚·‚éê‡
+	//mDistanceã®æ˜‡é †ã§ã‚½ãƒ¼ãƒˆã™ã‚‹å ´åˆ
 
 	std::sort(va.begin(), va.end(), [](auto const& c1, auto const& c2) {
 		return c1->mDistance < c2->mDistance;
