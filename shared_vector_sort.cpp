@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <vector>
 #include <memory>
+#include <tuple>
 
 class A {
 public:
@@ -26,8 +27,8 @@ int main(void) {
 
 	std::shared_ptr<A> a1 = std::make_shared<A>(10, 2);
 	std::shared_ptr<A> a2 = std::make_shared<A>(4, 0);
-	std::shared_ptr<A> a3 = std::make_shared<A>(7, 3);
-	std::shared_ptr<A> a4 = std::make_shared<A>(7, 6);
+	std::shared_ptr<A> a3 = std::make_shared<A>(7, 6);
+	std::shared_ptr<A> a4 = std::make_shared<A>(7, 3);
 	std::shared_ptr<A> a5 = std::make_shared<A>(6, 1);
 
 	std::vector<std::shared_ptr<A>> va = std::vector<std::shared_ptr<A>>();
@@ -56,6 +57,18 @@ int main(void) {
 	});
 
 	std::cout << "Sorted by A->mDistance" << std::endl;
+
+	std::for_each(va.begin(), va.end(), [](auto const& c) {
+		c->dump();
+	});
+
+	//mJikanの昇順でソートし、mJikanが同一ならmDistanceの昇順でソートする場合
+
+	std::sort(va.begin(), va.end(), [](auto const& c1, auto const& c2) {
+		return std::tie(c1->mJikan, c1->mDistance) < std::tie(c2->mJikan, c2->mDistance);
+	});
+
+	std::cout << "Sorted by A->mJikan AND A->mDistance" << std::endl;
 
 	std::for_each(va.begin(), va.end(), [](auto const& c) {
 		c->dump();
