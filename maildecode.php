@@ -129,12 +129,12 @@ read_header_1($object, $key, $str);
 $contents_body = "";
 
 //シングルパートの場合
-if (array_key_exists('body', $object)) {
+if (property_exists($object, 'body')) {
     $contents_body .= $object->body;
 }
 
 //マルチパートの場合
-if (array_key_exists('parts', $object)) {
+if (property_exists($object,'parts')) {
     $parts = $object->parts;
     $n = count($parts);
     for ($i = 0; $i < $n; $i++) { //マルチパート取得ループ
