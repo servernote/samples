@@ -71,17 +71,19 @@ function read_header_3(&$obj, &$key, &$str, &$val)
 //chdir( "/home/hogeuser" );
 
 $stdin = file_get_contents('php://stdin');
+$decoder = new Mail_mimeDecode($stdin);
 
 $params = []; //オプションをここで設定（コード変換をお任せ設定）
 $params['include_bodies'] = true;
 $params['decode_bodies']  = true;
 $params['decode_headers'] = true;
 $params['crlf'] = "\r\n";
-$params['input'] = $stdin;
+//$params['input'] = $stdin;
 
 $object = null;
 try {
-    $object = Mail_mimeDecode::decode($params);
+    $object = $decoder->decode($params);
+//    $object = Mail_mimeDecode::decode($params);
 } catch (Exception $e) {
     fputs(STDERR, $e->getMessage() . "\n");
     $object = null;
