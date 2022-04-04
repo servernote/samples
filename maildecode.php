@@ -142,7 +142,7 @@ if (property_exists($object,'parts')) {
         if (array_key_exists("content-type", $arval->headers)) {
             if (strpos($arval->headers["content-type"], "text/plain") !== false) {
                 //echo $arval->headers["content-type"] . "\n";
-                if (array_key_exists('body', $arval)) {
+                if (property_exists($arval, 'body')) {
                     //echo $arval->body;
                     $contents_body .= $arval->body;
                 }
@@ -158,7 +158,7 @@ if (property_exists($object,'parts')) {
                 if ($rpp !== false) {
                     $sub = substr($sub, 0, $rpp);
                     echo "attachment-filename: " . $sub . "\n";
-                    if (array_key_exists('body', $arval)) {
+                    if (property_exists($arval, 'body')) {
                         file_put_contents($sub, $arval->body);
                     }
                 }
