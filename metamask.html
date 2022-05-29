@@ -78,8 +78,6 @@ body {
 	const eth2wei = 1000000000000000000;
 
 	var valid_mm = false;
-	var connected_mm = false;
-
 	var account_mm = "";
 	var network_id = 0;
 	var network_name = "";
@@ -95,19 +93,21 @@ body {
 		}
 	}
 
-	$(window).on('pageshow',function(){
+	function valid_metamask() {
 		if (typeof window.ethereum !== 'undefined') {
 			valid_mm = true;
 			$("#valid_mm_log").html("MetaMaskが認識できました。");
 		}
 		else {
+			valid_mm = false;
 			$("#valid_mm_log").html("MetaMaskがインストールされていません。");
 		}
-	});
+	}
 
 	async function connect_metamask() {
+		valid_metamask();
 
-		if(!valid_mm || connected_mm) {
+		if(!valid_mm) {
 			return;
 		}
 
@@ -165,6 +165,10 @@ body {
 		}
 
 	}
+
+	$(window).on('pageshow',function(){
+		valid_metamask();
+	});
 
 	$("#connect_mm_btn").on("click", function() {
 		connect_metamask();
