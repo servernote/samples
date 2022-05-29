@@ -96,7 +96,6 @@ body {
 	}
 
 	$(window).on('pageshow',function(){
-		$('#modal_wait').modal('hide');
 		if (typeof window.ethereum !== 'undefined') {
 			valid_mm = true;
 			$("#valid_mm_log").html("MetaMaskが認識できました。");
