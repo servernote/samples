@@ -18,6 +18,10 @@ body {
   margin-bottom: 50px;
 }
 
+textarea {
+  line-height: 1.2em;
+}
+
 </style>
 
     <!-- Optional JavaScript -->
@@ -41,7 +45,7 @@ body {
 
 <div class="row mb-3">
   <div class="col-12">
-<button id="connect_mm_btn" type="button" class="btn-danger p-2 rounded" style="width:280px;">MetaMaskと接続する</button>
+<button id="connect_mm_btn" type="button" class="btn-danger p-2 rounded" style="width:250px;">MetaMaskと接続する</button>
   </div>
 </div>
 
@@ -51,14 +55,17 @@ body {
 
 <div class="row mb-3">
   <div class="col-12">
-送金先アカウントアドレス：<input id="to_address_txt" type="text" style="width:400px;"><br>
-送金額：<input id="to_amounts_txt" type="text" style="width:100px;" value="0.01">ETH
+送金先アカウントアドレス(0x～)：<br>
+<input id="to_address_txt" type="text" style="width:400px;"><br>
+送金額：<input id="to_amounts_txt" type="text" style="width:100px;" value="0.01">ETH<br>
+任意データフィールド(0x～)：<br>
+<textarea id="to_data_txt" rows="6" style="width: 400px;"></textarea>
   </div>
 </div>
 
 <div class="row mb-3">
   <div class="col-12">
-<button id="send_amounts_btn" type="button" class="btn-primary p-2 rounded" style="width:280px;">上記内容で送金する</button><b style="color:#ff0000;">※自己責任注意※</b>
+<button id="send_amounts_btn" type="button" class="btn-primary p-2 rounded" style="width:250px;">上記内容で送金する</button><b style="color:#ff0000;">※自己責任注意※</b>
   </div>
 </div>
 
@@ -82,6 +89,22 @@ body {
 	var network_id = 0;
 	var network_name = "";
 	var balance = 0;
+
+	function escape_html (string) {
+	  if(typeof string !== 'string') {
+	    return string;
+	  }
+	  return string.replace(/[&'`"<>]/g, function(match) {
+	   return {
+	      '&': '&amp;',
+	      "'": '&#x27;',
+	      '`': '&#x60;',
+	      '"': '&quot;',
+	      '<': '&lt;',
+	      '>': '&gt;',
+	    }[match]
+	  });
+	}
 
 	function trimingForm(parts) {
 		if( $('#' + parts).length ) {
@@ -186,6 +209,15 @@ body {
 
 		trimingForm("to_address_txt");
 		trimingForm("to_amounts_txt");
+		trimingForm("to_data_txt");
+		var to_data_txt = $("#to_data_txt").val();
+		if (to_data_txt.length > 0) {
+			to_data_txt = to_data_txt.replace(/\r\n/g, "\n");
+			to_data_txt = to_data_txt.replace(/\n/g, "");
+		}
+		else {
+			to_data_txt = "";
+		}
 
 		if($("#to_address_txt").val().length <= 0 ||
 			$("#to_amounts_txt").val().length <= 0) {
@@ -223,7 +255,7 @@ body {
 				to: $("#to_address_txt").val(), // Required except during contract publications.
 				from: window.ethereum.selectedAddress, // must match user's active address.
 				value: send_wei_str, // Only required to send ether to the recipient from the initiating external account.
-				data: '', // Optional, but used for defining smart contract creation and interaction.
+				data: to_data_txt, // Optional, but used for defining smart contract creation and interaction.
 				chainId: '', // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
 			};
 
