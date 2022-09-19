@@ -8,9 +8,9 @@ return new Promise(function (resolve, reject) {
 		console.log('statusCode:', res.statusCode);
 		console.log('headers:', res.headers);
 
-		//200 OK以外はエラーとする場合
-		if(res.statusCode != 200) {
-			reject(new Error('res.statusCode != 200'));
+		//200台以外はエラーとする場合
+		if(res.statusCode >= 300) {
+			reject(new Error('res.statusCode >= 300'));
 		}
 
 		var chunks = []; //チャンクレスポンスストック配列
@@ -24,6 +24,11 @@ return new Promise(function (resolve, reject) {
 
 	req.on('error', (err) => {
 		reject(err);
+	});
+
+	req.on('timeout', () => {
+		req.abort();
+		reject(new Error('request timed out'));
 	});
 
 	if(postData != null) {
@@ -41,6 +46,7 @@ async function main() {
 
 	var options = {
 		method: 'GET',
+		timeout: 5000,
 		//headers: {
 			//'Content-Type': 'application/json',
 		//},
