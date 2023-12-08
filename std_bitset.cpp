@@ -17,5 +17,8 @@ int main(void) {
     std::cout << bit2.to_string() << std::endl;
     std::cout << bit3.to_string() << std::endl;
 
+    std::cout << "bit1[7] is " << bit1.test(7) << std::endl;
+    std::cout << "bit1[8] is " << bit1.test(8) << std::endl;
+
 	return 0;
 }
